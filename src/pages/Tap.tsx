@@ -1,10 +1,15 @@
 import React, { useState } from 'react';
-import { Zap } from 'lucide-react';
+import TapCore from '../components/TapCore';
+import EnergyCard from '../components/EnergyCard';
+import StreakCard from '../components/StreakCard';
+import MultiplierCard from '../components/MultiplierCard';
+import ShibRewardCard from '../components/ShibRewardCard';
 
 export default function Tap() {
-  const [xp, setXp] = useState(12450);
+  const [xp, setXp] = useState(12994);
   const [energy, setEnergy] = useState(650);
-  const [clicks, setClicks] = useState<{id: number, x: number, y: number}[]>([]);
+  const [clicks, setClicks] = useState<{id: number, x: number, y: number, text: string}[]>([]);
+  const maxEnergy = 1000;
 
   const handleTap = (e: React.MouseEvent<HTMLButtonElement>) => {
     if (energy <= 0) return;
@@ -13,9 +18,19 @@ export default function Tap() {
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
     
-    const newClick = { id: Date.now() + Math.random(), x, y };
+    const isCritical = Math.random() > 0.9;
+    const text = isCritical ? 'CRITICAL TAP' : '+8 SHIB';
+    const xpGain = isCritical ? 24 : 8;
+
+    const newClick = { id: Date.now() + Math.random(), x, y, text };
     setClicks(prev => [...prev, newClick]);
-    setXp(prev => prev + 5);
+    
+    setXp(prev => {
+      const newXp = prev + xpGain;
+      window.dispatchEvent(new CustomEvent('updateBalance', { detail: newXp }));
+      return newXp;
+    });
+    
     setEnergy(prev => prev - 1);
 
     setTimeout(() => {
@@ -24,42 +39,32 @@ export default function Tap() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-[70vh] animate-in fade-in duration-300">
-      <div className="text-center mb-12">
-        <h2 className="text-gray-500 font-medium mb-2">Total XP</h2>
-        <div className="text-5xl font-black text-gray-900 tracking-tight">{xp.toLocaleString()}</div>
-      </div>
-
-      <div className="relative mb-16">
-        <button 
-          onClick={handleTap}
-          className="w-64 h-64 rounded-full bg-gradient-to-b from-blue-500 to-blue-700 shadow-[0_20px_50px_rgba(37,99,235,0.3)] flex items-center justify-center active:scale-95 transition-transform duration-100 relative overflow-hidden"
-        >
-          <div className="absolute inset-2 rounded-full border-4 border-white/20"></div>
-          <Zap className="w-24 h-24 text-white fill-white drop-shadow-md" />
-          
-          {clicks.map(click => (
-            <div 
-              key={click.id}
-              className="absolute text-white font-bold text-2xl animate-out fade-out slide-out-to-top-8 duration-1000 pointer-events-none"
-              style={{ left: click.x - 15, top: click.y - 20 }}
-            >
-              +5
-            </div>
-          ))}
-        </button>
-      </div>
-
-      <div className="w-full max-w-xs bg-white p-4 rounded-2xl border border-gray-100 shadow-sm">
-        <div className="flex justify-between items-center mb-2 text-sm font-medium">
-          <span className="text-gray-500 flex items-center gap-1"><Zap className="w-4 h-4 text-yellow-500 fill-yellow-500"/> Energy</span>
-          <span className="text-gray-900">{energy} / 1000</span>
+    <div className="flex flex-col min-h-[75vh] animate-in fade-in duration-300 px-4">
+      {/* Balance Section */}
+      <div className="w-full max-w-[420px] mx-auto flex justify-end">
+        <div className="font-sora text-[14px] font-semibold text-[#111827] mt-[12px] mr-[16px]">
+          {xp.toLocaleString()} SHIB
         </div>
-        <div className="w-full bg-gray-100 rounded-full h-3">
-          <div 
-            className="bg-blue-600 rounded-full h-3 transition-all duration-300" 
-            style={{ width: `${(energy / 1000) * 100}%` }}
-          ></div>
+      </div>
+      
+      {/* Tap Core */}
+      <div className="mt-6 mb-6">
+        <TapCore onTap={handleTap} clicks={clicks} />
+      </div>
+      
+      {/* Cards Section */}
+      <div className="w-full max-w-[420px] mx-auto flex flex-col">
+        <div className="mt-5">
+          <EnergyCard energy={energy} maxEnergy={maxEnergy} />
+        </div>
+        
+        <div className="mt-4 grid grid-cols-2 gap-3 w-full">
+          <StreakCard />
+          <MultiplierCard />
+        </div>
+        
+        <div className="mt-4">
+          <ShibRewardCard />
         </div>
       </div>
     </div>

@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@400;500;600;700;800&display=swap');
 @import "tailwindcss";
 
 @theme {
@@ -15,7 +15,13 @@
   --color-token-xp: #6366F1;
   --color-token-tree: #059669;
 
-  --font-sans: "Inter", system-ui, sans-serif;
+  --font-sans: "Sora", "Inter", system-ui, sans-serif;
+  --font-sora: "Sora", "Inter", system-ui, sans-serif;
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
 }
 
 body {
