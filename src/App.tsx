@@ -22,7 +22,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-bg-app text-text-primary font-sans pb-20 pt-16">
+    <div className="min-h-screen bg-bg-app text-text-primary font-sans pb-[80px] pt-16">
       <Header navigate={navigate} />
       
       <main className="max-w-md mx-auto w-full p-4">

@@ -17,8 +17,8 @@ export default function FooterNav({ currentPage, navigate }: FooterNavProps) {
   ] as const;
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-border-default pb-safe z-50">
-      <div className="max-w-md mx-auto w-full px-2 h-16 flex items-center justify-around">
+    <nav className="fixed bottom-0 left-0 right-0 w-full z-[1000] bg-[#FFFFFF] border-t border-[#E5E7EB] h-[64px]">
+      <div className="max-w-md mx-auto w-full px-2 h-full flex items-center justify-around">
         {navItems.map(({ id, icon: Icon, label }) => {
           const isActive = currentPage === id;
           return (

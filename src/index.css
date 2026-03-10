@@ -24,10 +24,11 @@
   100% { transform: translateX(100%); }
 }
 
-body {
+body, html {
   background-color: var(--color-bg-app);
   color: var(--color-text-primary);
   font-family: var(--font-sans);
+  overflow-x: hidden;
 }
 
 .scrollbar-hide::-webkit-scrollbar {

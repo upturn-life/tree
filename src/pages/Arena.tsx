@@ -34,7 +34,7 @@ export default function Arena({ navigate }: ArenaProps) {
 
       <CategoryFilters />
 
-      <div className="flex flex-col gap-3">
+      <div className="block">
         {markets.map(m => (
           <MarketCard 
             key={m.id} id={m.id} question={m.q} yesPercent={m.y} noPercent={m.n} 
