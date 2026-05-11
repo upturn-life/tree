@@ -9,11 +9,12 @@ import Leaderboard from './pages/Leaderboard';
 import Quests from './pages/Quests';
 import Profile from './pages/Profile';
 import Wallet from './pages/Wallet';
+import Maintenance from './pages/Maintenance';
 
-export type Page = 'home' | 'arena' | 'market_detail' | 'tap' | 'leaderboard' | 'quests' | 'profile' | 'wallet';
+export type Page = 'home' | 'arena' | 'market_detail' | 'tap' | 'leaderboard' | 'quests' | 'profile' | 'wallet' | 'maintenance';
 
 export default function App() {
-  const [currentPage, setCurrentPage] = useState<Page>('home');
+  const [currentPage, setCurrentPage] = useState<Page>('maintenance');
   const [selectedMarketId, setSelectedMarketId] = useState<string | null>(null);
 
   const navigate = (page: Page, marketId?: string) => {
@@ -21,10 +22,14 @@ export default function App() {
     if (marketId) setSelectedMarketId(marketId);
   };
 
+  if (currentPage === 'maintenance') {
+    return <Maintenance />;
+  }
+
   return (
     <div className="min-h-screen bg-bg-app text-text-primary font-sans pb-[80px] pt-16">
       <Header navigate={navigate} />
-      
+
       <main className="max-w-md mx-auto w-full p-4">
         {currentPage === 'home' && <Home navigate={navigate} />}
         {currentPage === 'arena' && <Arena navigate={navigate} />}
